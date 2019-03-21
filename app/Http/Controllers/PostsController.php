@@ -97,6 +97,11 @@ class PostsController extends Controller
 
         $post = Post::find($id);
 
+        $user_id = Auth::id();
+        if($user_id != $post->user_id)
+        {
+            return redirect('/posts')->with('error' , "that is not your post ");
+        }
         return view('posts.edit' , compact('post'));
     }
 
@@ -122,6 +127,13 @@ class PostsController extends Controller
         $post->title = $request->input('title');
         $post->body = $request->input('body');
         $post->slug = str_replace(' ','-',strtolower($post->title));
+
+        $user_id = Auth::id();
+        if($user_id != $post->user_id)
+        {
+            return redirect('/posts')->with('error' , "that is not your post ");
+        }
+
         $post->save();
 
         return redirect('/posts/'.$post->slug)->with('success' , 'Post Updated successfully');
@@ -137,6 +149,12 @@ class PostsController extends Controller
     {
         //
         $post = Post::find($id);
+        $user_id = Auth::id();
+        if($user_id != $post->user_id)
+        {
+            return redirect('/posts')->with('error' , "that is not your post ");
+        }
+        
         $post->delete();
         return redirect('/posts')->with('success' , 'Post deleted successfully');
 
