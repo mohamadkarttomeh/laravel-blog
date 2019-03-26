@@ -11,9 +11,10 @@
 |
 */
 
-Route::get('/', "MyController@index");
-Route::get('/about', "MyController@about");
-Route::get('/contact', "MyController@contact");
+Route::get('/', 'HomeController@index');
+Route::get('/about', "PagesController@about");
+Route::get('/contact', "PagesController@contact");
+Route::post('/dosend', "PagesController@dosend");
 Route::resource('/posts',"PostsController");
 
 Auth::routes();
