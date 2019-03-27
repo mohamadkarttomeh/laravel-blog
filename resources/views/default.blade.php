@@ -9,6 +9,7 @@
      
 
     <title> {{config('app.name') }} </title>
+    <link rel="stylesheet" href= "{{ asset('css/extra.css') }}" >
     <link rel="stylesheet" href= "{{ asset('css/app.css') }}" >
 
     <script src="//cdn.ckeditor.com/4.11.2/standard/ckeditor.js"></script>
