@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Post;
+use Image;
+
 class PostsController extends Controller
 {
 
@@ -55,7 +57,8 @@ class PostsController extends Controller
 
         $request->validate([
             'title' => 'required', 
-            'body' => 'required'
+            'body' => 'required' , 
+            'photo' =>'image|mimes:jpeg,png,jpg|max:2048'
 
         ]);
 
@@ -66,6 +69,17 @@ class PostsController extends Controller
         $post->user_id = $user->id;
         $now = date('YmdHis');
         $post->slug = str_replace(' ','-',strtolower($post->title)).'-'.$now;
+        
+        if($request->hasFile('photo'))
+        {
+            $photo = $request->photo;
+            $filename = time() . '-'.$photo->getClientOriginalName();
+            $location = public_path('images/posts/'.$filename);
+            
+            Image::make($photo)->resize(800,400)->save($location);
+            $post->photo = $filename;
+        }
+
         $post->save();
         return redirect('/posts')->with('success' , 'Post Created successfully');
     }
